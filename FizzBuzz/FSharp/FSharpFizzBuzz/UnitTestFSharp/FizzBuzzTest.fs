@@ -1,7 +1,6 @@
 ﻿namespace UnitTestFSharp
 
 open NUnit.Framework
-open FizzBuzz.FizzBuzz
 
 module Say =
     let [<Test>] ``say 1 returns '1'``() =
