@@ -1,0 +1,50 @@
+apply plugin: 'java'
+apply plugin: 'jacoco'
+apply plugin: 'pmd'
+
+version = '1.0'
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+compileJava.options.encoding = 'UTF-8'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'com.google.guava:guava:18.0'
+
+    testCompile('junit:junit:4.12') {
+        transitive = false
+    }
+    testCompile 'org.mockito:mockito-all:1.10.19'
+    testCompile 'org.assertj:assertj-core:3.2.0'
+    testCompile 'org.assertj:assertj-guava:1.3.1'
+    testCompile 'eu.codearte.catch-exception:catch-exception:1.4.4'
+    testCompile 'eu.codearte.catch-exception:catch-throwable:1.4.4'
+}
+
+pmd {
+    consoleOutput = true
+}
+
+test {
+    testLogging {
+        events 'passed', 'skipped', 'failed'
+        exceptionFormat = 'full'
+    }
+
+    jacoco {
+        append = false
+    }
+}
+
+task cover(dependsOn: jacocoTestReport)
+task lint(dependsOn: check)
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.9'
+}
+
+defaultTasks 'clean', 'lint', 'test', 'cover'
