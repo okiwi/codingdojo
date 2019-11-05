@@ -1,0 +1,18 @@
+# Pour ce randori :
+#
+# - point de synchro initial de 5 minutes
+# - 5 minutes le tour
+# - tous les 1/4 heure, point de synchro de 5 minutes
+###
+### 27/09/2010
+###
+# - 15 minutes par binôme (chaque binôme devrait pouvoir passer 2 fois)
+# - chaque binôme s'auto-organise (ping-pong ou pas)
+# - les gens qui regardent évitent de parler
+# - celui qui code explique ce qu'il fait
+# - point de synchro lorsqu'on change de binôme
+###
+### 11/10/2010
+###
+# - 10 minutes par binôme (chaque binôme devrait pouvoir passer 2 fois)
+# - Construire et afficher l'agenda/planning de la séance au début (//todo taskboard)
