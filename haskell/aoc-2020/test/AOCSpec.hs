@@ -3,6 +3,7 @@
 module AOCSpec where
 
 import Test.Hspec
+import Test.QuickCheck
 
 -- --type Map = [String]
 
@@ -14,6 +15,28 @@ data Step = Step Int Int
 -- countTrees _ _ = undefined
 
 data Map' = Map' { cols :: Int, rows :: Int, theMap :: [[Int]] }
+  deriving (Eq, Show)
+
+instance Arbitrary Map' where
+  arbitrary = do
+    c <- choose (1,100)
+    r <- choose (1,100)
+    t <- trees c r
+    pure $ Map' c r t
+
+trees :: Int -> Int -> Gen [[Int]]
+trees c r = undefined
+
+encodePuzzle :: Map' -> [String]
+encodePuzzle (Map' c r _) = replicate r $ replicate c '.'
+
+decodePuzzle :: [String] -> Map'
+decodePuzzle (p : puzzle) =
+  let cols' = length p
+      lines' = length puzzle + 1
+  in Map' cols' lines' (replicate lines' [])
+
+decodePuzzle _ = Map' 11 2 [[2,3],[0,4,8]]
 
 type Position = (Int,Int)
 
@@ -83,3 +106,39 @@ spec = describe "AOC Day 3" $ do
         step = Step 1 1
 
     countTrees' singleMap step `shouldBe` 0
+
+  it "decode input puzzle" $ do
+    let inputPuzzle = [ "..##......."
+                      , "#...#...#.."
+                      ]
+
+    decodePuzzle inputPuzzle `shouldBe` Map' 11 2 [[2,3],[0,4,8]]
+
+  it "decode another input puzzle" $ do
+    let inputPuzzle = [ "..." ]
+
+    decodePuzzle inputPuzzle `shouldBe` Map' 3 1 [[]]
+
+  it "encode and decode puzzle" $ property roundTripMapEncoding
+
+roundTripMapEncoding :: Map' -> Property
+roundTripMapEncoding map' =
+  let encoded = encodePuzzle map'
+      decoded = decodePuzzle encoded
+  in counterexample ("encoded: " <> show encoded <> ", decode: " <> show decoded) $ decoded == map'
+
+{--
+
+..##.......
+#...#...#..
+.#....#..#.
+..#.#...#.#
+.#...##..#.
+..#.##.....
+.#.#.#....#
+.#........#
+#.##...#...
+#...##....#
+.#..#...#.#
+
+--}
